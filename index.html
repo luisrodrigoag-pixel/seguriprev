@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEGURIPREV · Sistema Integral</title>
+<meta name="description" content="Sistema Integral de Gestión · Protección y Seguridad Privada Securitas">
+<meta name="theme-color" content="#111110">
+<!-- Ícono y modo app en iPhone / iPad -->
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SEGURIPREV">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Android, Windows y Chrome de escritorio -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" href="favicon.ico">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;color:#ece8e1;background:#111110;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+  background-image:radial-gradient(900px 460px at 50% -10%,rgba(185,145,95,.22),transparent 62%),repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 1px,transparent 1px 22px)}
+.caja{width:100%;max-width:460px;text-align:center;padding:36px 28px 28px;border-radius:18px;border:1px solid rgba(201,160,106,.2);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.logo{width:88px;height:88px;border-radius:22px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.marca{margin-top:18px;font:800 21px/1 Montserrat,sans-serif;letter-spacing:4px;color:#f5f1ea}
+.marca span{color:#c9a06a}
+.eye{margin-top:9px;font:600 10.5px/1.5 Montserrat,sans-serif;letter-spacing:3.2px;color:#c9a06a;text-transform:uppercase}
+.btn{margin-top:24px;display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border:0;border-radius:999px;cursor:pointer;text-decoration:none;
+  background:linear-gradient(135deg,#d7b27a,#a67c52);color:#17130e;font:700 14.5px/1 Montserrat,sans-serif;box-shadow:0 12px 34px rgba(166,124,82,.32)}
+.sec{margin-top:12px;background:rgba(255,255,255,.07);color:#f5f1ea;box-shadow:none;border:1px solid rgba(255,255,255,.14)}
+.pasos{display:none;margin-top:22px;text-align:left;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font-size:13.5px;line-height:1.65;color:#d9d3c9}
+.pasos b{color:#fff}
+.pasos .t{font:800 11px Inter,sans-serif;letter-spacing:.7px;text-transform:uppercase;color:#e6c15a;margin-bottom:6px}
+.nota{margin-top:20px;font-size:11.5px;color:#6f6a62;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="caja">
+  <img class="logo" src="icono-192.png" alt="SEGURIPREV">
+  <div class="marca">SEGURIPREV <span>SECURITAS</span></div>
+  <div class="eye">Sistema Integral de Gestión</div>
+  <a class="btn" id="entrar" href="#">Entrar a la plataforma →</a><br>
+  <button class="btn sec" id="instalar" style="display:none">📲 Instalar como app</button>
+  <div class="pasos" id="pasosIOS">
+    <div class="t">Instálala en tu iPhone</div>
+    1. En <b>Safari</b>, toca el botón <b>Compartir</b> (el cuadro con flecha hacia arriba).<br>
+    2. Elige <b>“Agregar a pantalla de inicio”</b>.<br>
+    3. Toca <b>Agregar</b>. Aparecerá el ícono de SEGURIPREV.
+  </div>
+  <div class="pasos" id="pasosOtro">
+    <div class="t">Instálala en tu equipo</div>
+    En Chrome: menú <b>⋮</b> → <b>“Instalar app”</b> o <b>“Agregar a pantalla principal”</b>.
+  </div>
+  <div class="nota">Acceso exclusivo para personal autorizado.<br>Entra con tu cuenta de trabajo de Google.</div>
+</div>
+<script>
+// Dirección de la plataforma (app web de Apps Script)
+var APP = 'https://script.google.com/a/macros/solestraconsultores.mx/s/AKfycbx_S6zpLfwgKwPU8Gm0eg03cLTapx--XsAsekk1NRlPpvotbQrstRJOdHJ7OQQuRg0s/exec';
+document.getElementById('entrar').href = APP;
+var standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+// Abierta desde el ícono instalado: directo a la plataforma
+if (standalone) { location.replace(APP); }
+else {
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  document.getElementById(ios ? 'pasosIOS' : 'pasosOtro').style.display = 'block';
+  var aviso = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); aviso = e;
+    document.getElementById('instalar').style.display = 'inline-flex';
+    document.getElementById('pasosOtro').style.display = 'none';
+  });
+  document.getElementById('instalar').onclick = function () { if (aviso) { aviso.prompt(); aviso = null; this.style.display = 'none'; } };
+}
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+</script>
+</body>
+</html>
