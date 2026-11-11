@@ -54,15 +54,19 @@ body{font-family:Inter,system-ui,sans-serif;color:#ece8e1;background:#111110;min
     <div class="t">Instálala en tu equipo</div>
     En Chrome: menú <b>⋮</b> → <b>“Instalar app”</b> o <b>“Agregar a pantalla principal”</b>.
   </div>
-  <div class="nota">Acceso exclusivo para personal autorizado.<br>Entra con tu cuenta de trabajo de Google.</div>
+  <div class="nota">Acceso exclusivo para personal autorizado.<br>Entra con el correo que te dieron de alta: Gmail, Outlook, institucional o cualquier otro vinculado a Google.<br>¿Ves un error? Si tienes varias cuentas de Google abiertas, ábrelo en una ventana de incógnito.<br><a id="directo" href="#" style="color:#a67c52">¿Correo @solestraconsultores.mx? Entra directo</a></div>
 </div>
 <script>
 // Dirección de la plataforma (app web de Apps Script)
 var APP = 'https://script.google.com/a/macros/solestraconsultores.mx/s/AKfycbx_S6zpLfwgKwPU8Gm0eg03cLTapx--XsAsekk1NRlPpvotbQrstRJOdHJ7OQQuRg0s/exec';
-document.getElementById('entrar').href = APP;
+// Entrada por el proyecto de Acceso: identifica cualquier cuenta de Google (Gmail, Outlook, institucional…)
+// y la manda a la plataforma con un pase firmado. La plataforma solo deja pasar a quien está dado de alta y activo.
+var ACCESO = 'https://script.google.com/a/macros/solestraconsultores.mx/s/AKfycbx-j4Y7rhHPB9Bs-JgoH6mOQanBiufBXRkl_uz_1zBrkYB4VWXKhPZ34Uw-q22rrckABw/exec';
+document.getElementById('entrar').href = ACCESO;
+document.getElementById('directo').href = APP;
 var standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 // Abierta desde el ícono instalado: directo a la plataforma
-if (standalone) { location.replace(APP); }
+if (standalone) { location.replace(ACCESO); }
 else {
   var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   document.getElementById(ios ? 'pasosIOS' : 'pasosOtro').style.display = 'block';
